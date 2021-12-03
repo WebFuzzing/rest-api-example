@@ -1,6 +1,5 @@
 package org.example;
 
-import com.p6spy.engine.spy.P6SpyDriver;
 import org.evomaster.client.java.controller.EmbeddedSutController;
 import org.evomaster.client.java.controller.InstrumentedSutStarter;
 import org.evomaster.client.java.controller.api.dto.AuthenticationDto;
@@ -46,10 +45,6 @@ public class EMDriver extends EmbeddedSutController {
         return connection;
     }
 
-    public String getDatabaseDriverName() {
-        return "org.h2.Driver";
-    }
-
     public ProblemInfo getProblemInfo() {
         return new RestProblem("http://localhost:8080/v3/api-docs", null);
     }
@@ -60,10 +55,7 @@ public class EMDriver extends EmbeddedSutController {
 
     public String startSut() {
 
-        ctx = SpringApplication.run(Application.class, new String[]{
-                "--spring.datasource.url=jdbc:p6spy:h2:mem:testdb;DB_CLOSE_DELAY=-1;",
-                "--spring.datasource.driver-class-name=" + P6SpyDriver.class.getName()
-        });
+        ctx = SpringApplication.run(Application.class);
 
         JdbcTemplate jdbc = ctx.getBean(JdbcTemplate.class);
         try {
