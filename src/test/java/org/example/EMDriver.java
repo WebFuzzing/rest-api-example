@@ -4,8 +4,10 @@ import org.evomaster.client.java.controller.EmbeddedSutController;
 import org.evomaster.client.java.controller.InstrumentedSutStarter;
 import org.evomaster.client.java.controller.api.dto.AuthenticationDto;
 import org.evomaster.client.java.controller.api.dto.SutInfoDto;
+import org.evomaster.client.java.controller.api.dto.database.schema.DatabaseType;
 import org.evomaster.client.java.controller.db.DbCleaner;
 import org.evomaster.client.java.controller.internal.SutController;
+import org.evomaster.client.java.controller.internal.db.DbSpecification;
 import org.evomaster.client.java.controller.problem.ProblemInfo;
 import org.evomaster.client.java.controller.problem.RestProblem;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class EMDriver extends EmbeddedSutController {
@@ -27,7 +30,8 @@ public class EMDriver extends EmbeddedSutController {
     }
 
     private ConfigurableApplicationContext ctx;
-    private Connection connection;
+
+    private Connection sqlConnection;
 
     public boolean isSutRunning() {
         return ctx!=null && ctx.isRunning();
@@ -41,9 +45,6 @@ public class EMDriver extends EmbeddedSutController {
         return null;
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
 
     public ProblemInfo getProblemInfo() {
         return new RestProblem("http://localhost:8080/v3/api-docs", null);
@@ -58,8 +59,9 @@ public class EMDriver extends EmbeddedSutController {
         ctx = SpringApplication.run(Application.class);
 
         JdbcTemplate jdbc = ctx.getBean(JdbcTemplate.class);
+
         try {
-            connection = jdbc.getDataSource().getConnection();
+            sqlConnection = jdbc.getDataSource().getConnection();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -72,6 +74,13 @@ public class EMDriver extends EmbeddedSutController {
     }
 
     public void resetStateOfSUT() {
-        DbCleaner.clearDatabase_H2(connection);
+    }
+
+    @Override
+    public List<DbSpecification> getDbSpecifications() {
+        return Arrays.asList(new DbSpecification(){{
+            dbType = DatabaseType.H2;
+            connection = sqlConnection;
+        }});
     }
 }
