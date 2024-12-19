@@ -29,11 +29,19 @@ jobs:
       - name: Start Docker Compose
         run: docker-compose up -d --build
 
-      - uses: webfuzzing/evomaster-action@v0
+      - uses: webfuzzing/evomaster-action
         with:
           args: --blackBox true \ 
                 --bbSwaggerUrl http://host.docker.internal:8080/v3/api-docs
+          output-dir: /results
+
+      - name: Upload Generated Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: results
+          path: /results
 
       - name: Stop Docker Compose
         if: always()
         run: docker-compose down
+
