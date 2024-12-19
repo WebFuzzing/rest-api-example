@@ -27,7 +27,7 @@ jobs:
         run: mvn clean verify --fae
 
       - name: Start Docker Compose
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
 
       - uses: webfuzzing/evomaster-action@v0.0.4
         with:
