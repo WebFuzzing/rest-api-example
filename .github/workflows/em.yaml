@@ -1,0 +1,39 @@
+name: EvoMaster Test Case Generation
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build with Maven
+        run: mvn clean verify --fae
+
+      - name: Start Docker Compose
+        run: docker-compose up -d --build
+
+      - uses: webfuzzing/evomaster-action@v0
+        with:
+          args: --blackBox true \ 
+                --bbSwaggerUrl http://host.docker.internal:8080/v3/api-docs
+
+      - name: Stop Docker Compose
+        if: always()
+        run: docker-compose down
