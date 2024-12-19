@@ -52,7 +52,7 @@
             <groupId>org.evomaster</groupId>
             <artifactId>evomaster-client-java-controller</artifactId>
             <scope>test</scope>
-            <version>3.0.0</version>
+            <version>3.3.0</version>
         </dependency>
 
     </dependencies>
