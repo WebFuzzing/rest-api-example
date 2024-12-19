@@ -31,7 +31,8 @@ jobs:
 
       - uses: webfuzzing/evomaster-action@v0.0.5
         with:
-          args: --blackBox true \ 
+          args: >- 
+                --blackBox true  
                 --bbSwaggerUrl http://localhost:8080/v3/api-docs
 
       - name: Upload Generated Files
