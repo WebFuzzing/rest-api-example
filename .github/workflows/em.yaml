@@ -6,7 +6,7 @@ on:
       - "**"
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
       - name: Start Docker Compose
         run: docker-compose up -d --build
 
-      - uses: webfuzzing/evomaster-action@v0.0.2
+      - uses: webfuzzing/evomaster-action@v0.0.3
         with:
           args: --blackBox true \ 
                 --bbSwaggerUrl http://host.docker.internal:8080/v3/api-docs
