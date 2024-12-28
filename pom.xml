@@ -8,7 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
-        <version.spring>2.3.3.RELEASE</version.spring>
+        <version.spring>2.7.18</version.spring>
     </properties>
 
 
@@ -26,9 +26,9 @@
 
         <!--  Needed to automatically generate the OpenAPI schema-->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.8.0</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
