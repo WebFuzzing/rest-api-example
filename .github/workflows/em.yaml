@@ -29,11 +29,13 @@ jobs:
       - name: Start Docker Compose
         run: docker compose up -d --build
 
-      - uses: webfuzzing/evomaster-action@v0.0.5
+      - uses: webfuzzing/evomaster-action@v0.1.0
         with:
           args: >- 
+                --writeWFCReport true
                 --blackBox true  
                 --bbSwaggerUrl http://localhost:8080/v3/api-docs
+          failOnErrors: "true"
 
       - name: Upload Generated Files
         uses: actions/upload-artifact@v3
