@@ -29,7 +29,7 @@ jobs:
       - name: Start Docker Compose
         run: docker compose up -d --build
 
-      - uses: webfuzzing/evomaster-action@v0.1.2
+      - uses: webfuzzing/evomaster-action@v1
         with:
           args: >- 
                 --writeWFCReport true
