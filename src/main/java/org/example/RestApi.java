@@ -28,7 +28,7 @@ public class RestApi {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Item> getById(@PathVariable("id") Long id){
 
-        Item item = repository.findById(id).orElse(null) ;
+        Item item = repository.findById(id).orElse(null);
 
         if(item == null){
             return ResponseEntity.notFound().build();
